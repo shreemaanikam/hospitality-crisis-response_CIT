@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { db } from "./firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 
+import GlobalAlert from "./GlobalAlert";
 import SOSButton from "./SOSButton";
 import SafeButton from "./SafeButton";
 import Dashboard from "./Dashboard";
@@ -43,6 +44,7 @@ function App() {
 
       {/* 🔘 BUTTONS */}
       <div className="flex flex-col items-center gap-6 mt-6 relative z-10">
+        <GlobalAlert />
         <SOSButton />
         <SafeButton />
       </div>
