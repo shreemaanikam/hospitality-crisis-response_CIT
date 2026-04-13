@@ -6,6 +6,12 @@ export default function Dashboard() {
   const [rooms, setRooms] = useState([]);
   const audioRef = useRef(null);
 
+  // 🏢 Floor structure (you can expand later)
+  const floors = [
+    ["101", "102", "103", "104"],
+    ["105", "106", "107", "108"]
+  ];
+
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "rooms"), (snapshot) => {
       const roomData = snapshot.docs.map(doc => ({
@@ -39,29 +45,52 @@ export default function Dashboard() {
         🏨 Staff Dashboard
       </h2>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {rooms.map(room => (
-          <div
-            key={room.id}
-            className={`p-4 rounded-xl text-white text-center transition ${
-              room.status === "danger"
-                ? "bg-red-600 animate-pulse border-4 border-white"
-                : "bg-green-500"
-            }`}
-          >
-            <h3 className="text-lg font-bold">Room {room.id}</h3>
+      {/* 🏢 FLOOR MAP */}
+      <div className="flex flex-col gap-6">
 
-            <p className="mt-2 text-lg">
-              {room.status === "danger" ? "🚨 DANGER" : "✅ SAFE"}
-            </p>
+        {floors.map((floor, floorIndex) => (
+          <div key={floorIndex}>
 
-            <p className="text-sm mt-2">
-              {room.updatedAt?.toDate
-                ? room.updatedAt.toDate().toLocaleTimeString()
-                : ""}
-            </p>
+            <h3 className="text-white text-xl mb-2">
+              🏢 Floor {floorIndex + 1}
+            </h3>
+
+            <div className="bg-gray-800 p-3 rounded-xl">
+              <div className="grid grid-cols-4 gap-4">
+
+                {floor.map((roomId) => {
+                  const room = rooms.find(r => r.id === roomId);
+
+                  return (
+                    <div
+                      key={roomId}
+                      className={`p-5 rounded-xl text-white text-center shadow-lg transition ${
+                        room?.status === "danger"
+                          ? "bg-red-600 animate-pulse border-4 border-white"
+                          : "bg-green-500"
+                      }`}
+                    >
+                      <h3 className="text-lg font-bold">Room {roomId}</h3>
+
+                      <p className="mt-2 text-xl">
+                        {room?.status === "danger" ? "🚨" : "✅"}
+                      </p>
+
+                      <p className="text-xs mt-2">
+                        {room?.updatedAt?.toDate
+                          ? room.updatedAt.toDate().toLocaleTimeString()
+                          : ""}
+                      </p>
+                    </div>
+                  );
+                })}
+
+              </div>
+            </div>
+
           </div>
         ))}
+
       </div>
     </div>
   );
