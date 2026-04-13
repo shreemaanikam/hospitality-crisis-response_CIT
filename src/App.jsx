@@ -20,29 +20,37 @@ function App() {
   }, []);
 
   return (
-    <div className={`min-h-screen p-4 md:p-8 transition-all duration-500 ${
-      isDanger ? "bg-red-700" : "bg-purple-600"
-    }`}>
-
-      <h1 className="text-3xl md:text-5xl font-bold text-white text-center mb-6">
-        🚨 Hospitality Crisis System
-      </h1>
-
+    <div
+      className={`min-h-screen transition-all duration-500 ${
+        isDanger ? "bg-red-700" : "bg-purple-700"
+      }`}
+    >
       {/* 🚨 FULL SCREEN ALERT */}
       {isDanger && (
-        <div className="fixed inset-0 bg-red-600 opacity-80 animate-pulse z-10 flex items-center justify-center">
-          <h2 className="text-white text-4xl md:text-6xl font-bold">
+        <div className="fixed inset-0 bg-red-600 bg-opacity-80 animate-pulse z-50 flex items-center justify-center">
+          <h2 className="text-white text-4xl md:text-6xl font-extrabold text-center">
             🚨 EMERGENCY 🚨
           </h2>
         </div>
       )}
 
-      <div className="flex flex-col items-center gap-6 mt-10 relative z-20">
+      {/* 🧭 HEADER */}
+      <div className="p-4 md:p-6 text-center">
+        <h1 className="text-3xl md:text-5xl font-bold text-white">
+          🚨 Hospitality Crisis System
+        </h1>
+      </div>
+
+      {/* 🔘 BUTTONS */}
+      <div className="flex flex-col items-center gap-6 mt-6 relative z-10">
         <SOSButton />
         <SafeButton />
       </div>
 
-      <Dashboard />
+      {/* 📊 DASHBOARD */}
+      <div className="mt-8 relative z-10">
+        <Dashboard />
+      </div>
     </div>
   );
 }
