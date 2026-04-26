@@ -11,22 +11,23 @@ export function IncidentDetail({ incidentId }: Props) {
 
   const inc = incidents.find(i => i.id === incidentId)
   if (!inc) return null
+  const incident = inc
 
-  const floor = inc.location.match(/\d/)?.[0] || '2'
+  const floor = incident.location.match(/\d/)?.[0] || '2'
   const floorRooms = Object.values(rooms).filter(r => r.floor === parseInt(floor))
   const recentComms = commsLog.slice(0, 8)
 
   function handleAction(action: string) {
     const messages: Record<string, string> = {
-      dispatch:  `Staff dispatched to ${inc.location}. Arjun M. and Suresh L. responding.`,
+      dispatch:  `Staff dispatched to ${incident.location}. Arjun M. and Suresh L. responding.`,
       evacuate:  `Floor ${floor} evacuation initiated. All guests notified via in-room system.`,
       services:  'Emergency services auto-dialled. Fire Brigade ETA: 4 min. Ambulance ETA: 7 min.',
-      resolve:   `Incident at ${inc.location} resolved. Area cleared and secured.`,
+      resolve:   `Incident at ${incident.location} resolved. Area cleared and secured.`,
     }
     addCommsMessage('staff', 'Staff Officer', messages[action] ?? 'Action taken.')
     if (action === 'dispatch') {
-      setStaffStatus(1, 'responding', inc.location)
-      setStaffStatus(5, 'responding', inc.location)
+      setStaffStatus(1, 'responding', incident.location)
+      setStaffStatus(5, 'responding', incident.location)
     }
     if (action === 'evacuate') {
       floorRooms.forEach(r => { if (r.status === 'danger') setRoomStatus(r.id, 'evacuated') })
